@@ -19,7 +19,9 @@ class Cell
 		double radius; 
 		double birth_rate; 
 		double death_rate; 
-		
+            
+//                double uptake_rate;  
+   		
 		std::vector<double> velocity; 
 		double mechanics_strength; 
 		double max_interaction_distance; 
@@ -47,7 +49,7 @@ bool check_for_birth_and_death( double dt );
 bool update_mechanics( double dt ); 
 bool update_phenotypes( double dt ); 
 
-void spring_mechanics( Cell* pMe, Cell* pOther ); 
+void spring_mechanics2( Cell* pMe, Cell* pOther ); 
 void simple_phenotype( Cell* pMe , double dt ); 
 
 #endif 

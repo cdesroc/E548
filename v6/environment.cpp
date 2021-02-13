@@ -134,4 +134,11 @@ double Environment::suggest_dt( void )
 	return pow( 2.0 , -nearest_power );
 }
 
+/*void Environment::update_environment( double dt )
+{
+        for( int n=0 ; n < all_cells.size(); n++ )
+        {  
+        }
+}*/
+
 Environment environment; 

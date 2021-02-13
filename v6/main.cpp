@@ -11,6 +11,23 @@
 
 std::string version = "v6"; 
 
+void display_stopwatch(double total_time)
+{
+        std::cout << "Time Elapsed: " << total_time << std::endl;
+}
+
+void toc(double &length, double begin)
+{
+        clock_t stop = clock();
+        length = (double)(stop - begin) / CLOCKS_PER_SEC;
+}
+
+void tic(double &begin)
+{
+        clock_t start = clock();
+        begin = start;
+}
+
 int main( int argc, char* argv[] )
 {
 	std::cout << "starting version " << version << " ... " << std::endl;
@@ -20,7 +37,11 @@ int main( int argc, char* argv[] )
 	// create cell types 
 	
 	// create environment 
-	
+       
+        double startClock;
+        tic(startClock);
+
+ 	
 	environment.set_domain( {-140.0,140.0,-140.0,140.0} ); 
 	environment.set_shape( {15,15} ); 
 	for( int j = 0 ; j < environment.shape[1] ; j++ )
@@ -63,6 +84,8 @@ int main( int argc, char* argv[] )
 		}
 		
 		// update environment 
+  
+//                environment.update_environment(dt);
 		
 		// update phenotypes
 		
@@ -78,6 +101,10 @@ int main( int argc, char* argv[] )
 	}
 	
 	std::cout << "done!"  << std::endl;
-	
+         
+        double stopClock;
+        toc(stopClock, startClock);
+        display_stopwatch(stopClock);
+
 	return 0; 
 }

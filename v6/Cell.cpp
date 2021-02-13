@@ -8,12 +8,14 @@ Cell::Cell()
 	radius = 5.0; 
 	birth_rate = 0.001;
 	death_rate = 0.00001; 
+
+//        uptake_rate = 0.1;
 	
 	mechanics_strength = 0.01; 
-	max_interaction_distance = 1.25 * (2*radius); 
+	max_interaction_distance = 2.0 * (2*radius); 
 	velocity = {0,0}; 
 	
-	mechanics_interaction = spring_mechanics; 
+	mechanics_interaction = spring_mechanics2; 
 	phenotype_model = simple_phenotype; 
 	
 	all_cells.push_back( this ); 
@@ -31,7 +33,7 @@ Cell::Cell( Cell& copy_me )
 	max_interaction_distance = copy_me.max_interaction_distance; 
 	velocity = {0,0}; 
 	
-	uptake_rate = copy_me.uptake_rate; 
+//	uptake_rate = copy_me.uptake_rate; 
 
 	mechanics_interaction = copy_me.mechanics_interaction; 
 	phenotype_model = copy_me.phenotype_model; 
@@ -150,6 +152,41 @@ void spring_mechanics( Cell* pMe, Cell* pOther )
 	pMe->velocity[1] += coefficient * DisplacementY; 
 	return; 
 }
+
+
+void spring_mechanics2( Cell* pMe, Cell* pOther )
+{
+        // don't interact with yourself!
+        if( pOther == pMe )
+        { return; }
+
+        // calculate displacement
+        double DisplacementX = pOther->position[0] - pMe->position[0];
+        double DisplacementY = pOther->position[1] - pMe->position[1];
+
+        // calculate distance
+        double distance
+                = sqrt( DisplacementX*DisplacementX + DisplacementY*DisplacementY );
+
+        // are we in range?
+        if( distance > pMe->max_interaction_distance )
+        { return; }
+
+        // normalize displacement (don't divide by zero)
+        distance += 1e-16;
+        DisplacementX /= distance;
+        DisplacementY /= distance;
+
+        // calculate equilibrium spacing
+        double spacing = pMe->radius + pOther->radius;
+
+        // contribute to velocity
+        double coefficient = pMe->mechanics_strength * 100 *( distance-spacing );
+        pMe->velocity[0] += coefficient * DisplacementX;
+        pMe->velocity[1] += coefficient * DisplacementY;
+        return;
+}
+
 
 void Cell::mechanics_interactions( void )
 {

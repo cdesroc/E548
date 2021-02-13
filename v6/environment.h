@@ -26,6 +26,8 @@ class Environment
 	
 	Environment();
 	~Environment(); 
+        
+//        void update_environment(double dt);
 	
 	double& operator()( double x, double y ); 
 	double& operator()( int i, int j ); 
